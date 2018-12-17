@@ -1,44 +1,10 @@
 import React from 'react'
 import MazeComponent from '../components/MazeComponent'
 import { shallow, mount } from 'enzyme'
+import stubs from './stubs/mazeStubs';
+import Constants from '../constants';
 
-describe('RosterComponent component ', () => {
-  const validMaze = `###########
-    S #   #   #
-    # # # # # #
-    #   #   # #
-    ######### #
-    # #       #
-    # # #######
-    # #   #   #
-    # # # ### #
-    #   #     F
-    ###########`;
-
-  const solvedMazeStr = `###########
-    S^#^^^#^^^#
-    #^#^#^#^#^#
-    #^^^#^^^#^#
-    #########^#
-    # #^^^^^^^#
-    # #^#######
-    # #^^^#   #
-    # # #^### #
-    #   #^^^^^F
-    ###########`
-
-  const invalidMaze = `###########
-    S #   #   #
-    # # # # # #
-    #   #   # #
-    ######### #
-    # #       #
-    # # #######
-    # #   #   #
-    # # # ### #
-    #   #     F
-    ##########`;
-
+describe('MazeComponent', () => {
   it('renders without crashing', () => {
     shallow(<MazeComponent />)
   });
@@ -76,24 +42,76 @@ describe('RosterComponent component ', () => {
 
   it('should display solved maze on click of button when user has entered a valid maze', () => {
     const wrapper = mount(<MazeComponent />)
-    wrapper.setState({ inputMaze: validMaze });
+    wrapper.setState({ inputMaze: stubs.VALID_MAZE });
     const buttons = wrapper.findWhere(elment => elment.type() === 'button');
     const button = buttons.find('[data-test="button"]')
     button.simulate('click')
     const solvedMaze = wrapper.find('[id="solved-maze-container"]')
     expect(solvedMaze.exists()).toBe(true)
-    expect(solvedMaze.text() == solvedMazeStr);
+    expect(solvedMaze.text() == stubs.SOLVED_MAZE);
   })
 
   it('should display error message in case maze rows are not equal', () => {
     const wrapper = mount(<MazeComponent />)
-    wrapper.setState({ inputMaze: invalidMaze });
+    wrapper.setState({ inputMaze: stubs.INVALID_MAZE });
     const buttons = wrapper.findWhere(elment => elment.type() === 'button');
     const button = buttons.find('[data-test="button"]')
     button.simulate('click')
     const solvedMaze = wrapper.find('[id="solved-maze-container"]')
     expect(solvedMaze.exists()).not.toBe(true)
     expect(wrapper.state().showError).toBe(true);
+  })
+
+  it('should display error message in case of an unknown character', () => {
+    const wrapper = mount(<MazeComponent />)
+    wrapper.setState({ inputMaze: stubs.INVALID_MAZE_UNKNOWN_CHARACTER });
+    const buttons = wrapper.findWhere(elment => elment.type() === 'button');
+    const button = buttons.find('[data-test="button"]')
+    button.simulate('click')
+    const solvedMaze = wrapper.find('[id="solved-maze-container"]')
+    expect(solvedMaze.exists()).not.toBe(true)
+    expect(wrapper.state().showError).toBe(true);
+    expect(wrapper.state().errorMsg).toEqual(Constants.UNKNOWN_CHARACTERS);
+  })
+
+  it('should display error message in case start is missing', () => {
+    const wrapper = mount(<MazeComponent />)
+    wrapper.setState({ inputMaze: stubs.INVALID_MAZE_START_MISSING });
+    const buttons = wrapper.findWhere(elment => elment.type() === 'button');
+    const button = buttons.find('[data-test="button"]')
+    button.simulate('click')
+    const solvedMaze = wrapper.find('[id="solved-maze-container"]')
+    expect(solvedMaze.exists()).not.toBe(true)
+    expect(wrapper.state().showError).toBe(true);
+    expect(wrapper.state().errorMsg).toEqual(Constants.START_MISSING);
+  })
+
+  it('should display error message in case finish is missing', () => {
+    const wrapper = mount(<MazeComponent />)
+    wrapper.setState({ inputMaze: stubs.INVALID_MAZE_FINISH_MISSING });
+    const buttons = wrapper.findWhere(elment => elment.type() === 'button');
+    const button = buttons.find('[data-test="button"]')
+    button.simulate('click')
+    const solvedMaze = wrapper.find('[id="solved-maze-container"]')
+    expect(solvedMaze.exists()).not.toBe(true)
+    expect(wrapper.state().showError).toBe(true);
+    expect(wrapper.state().errorMsg).toEqual(Constants.FINISH_MISSING);
+  })
+
+  it('should display error message in case a valid path is not found', () => {
+    spyOn(MazeComponent.prototype, 'handleChange').and.callThrough();
+    const wrapper = mount(<MazeComponent />)
+    const inputMazeTextArea = wrapper.find('[id="input-maze"]')
+    inputMazeTextArea.simulate('change', {
+      target: {
+        value: stubs.PATH_NOT_FOUND
+      }
+    })
+    expect(MazeComponent.prototype.handleChange).toHaveBeenCalled()
+    const buttons = wrapper.findWhere(elment => elment.type() === 'button');
+    const button = buttons.find('[data-test="button"]')
+    button.simulate('click')
+    expect(wrapper.state().pathNotFound).toBe(true);
   })
 
 
