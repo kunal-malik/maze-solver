@@ -1,4 +1,11 @@
 .maze-container {
+
+    span {
+        min-width: 10px;
+        min-height: 20px;
+        display: inline-block;
+    }
+
     textarea {
         resize: vertical
     }
@@ -9,9 +16,20 @@
     .content {
         margin-top: 50px;
         margin-right: 0px !important;
+
+        .input-maze {
+            border:1px solid $red;
+        }
+
+        /* .solved-maze-container{
+            border-style: groove;
+            border-radius: 10px;
+        } */
+
+
     }
 
     .red {
-        color: red;
+        color: $red;
     }
 }

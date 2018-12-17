@@ -5,13 +5,12 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --port 8080  --inline --content-base src/ --hot",
+    "start": "webpack-dev-server --port 9090  --inline --content-base src/ --hot",
     "test": "jest --config jest.config.js"
   },
   "author": "Kunal Malik",
   "license": "MIT",
   "devDependencies": {
-    "axios": "0.18.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-loader": "^7.0.0",

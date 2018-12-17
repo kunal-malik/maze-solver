@@ -20,7 +20,6 @@ function findPath(maze, row, col) {
         const coordinate = maze[row][col];
         coordinate.setVisited(true);
         if (coordinate.getType() === 'FINISH') {
-            console.log('found finish at', row, col)
             return true;
         } else if (coordinate.getType() === 'WALL') {
             return false;

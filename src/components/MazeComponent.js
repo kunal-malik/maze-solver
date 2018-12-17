@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import Util from './Utility';
-import Constants from './constants';
-import MazeConstructor from './MazeConstructor';
+import Util from '../Utility';
+import Constants from '../constants';
+import MazeConstructor from '../classes/MazeConstructor';
 
 /**
  * Main component that renders content on the screen
  */
-class Root extends Component {
+class MazeComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             inputMaze: '',
             solvedMaze: null,
-            showError: false
+            showError: false,
+            pathNotFound: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.solveMaze = this.solveMaze.bind(this);
@@ -37,8 +38,8 @@ class Root extends Component {
      * Handles button click. It calls solveMaze function in initial click and resetAll function in case user wants to solve another maze
      */
     handleClick() {
-        const { solvedMaze } = this.state;
-        solvedMaze ? this.resetAll() : this.solveMaze();
+        const { solvedMaze, pathNotFound } = this.state;
+        solvedMaze || pathNotFound ? this.resetAll() : this.solveMaze();
     }
 
     /**
@@ -49,7 +50,8 @@ class Root extends Component {
             solvedMaze: null,
             inputMaze: '',
             showError: false,
-            errorMsg: null
+            errorMsg: null,
+            pathNotFound: false
         })
     }
 
@@ -59,8 +61,8 @@ class Root extends Component {
     solveMaze() {
         const { inputMaze } = this.state;
         if (inputMaze != '') {
-            const mazeConstructor = new MazeConstructor(inputMaze);
-            const builtMaze = mazeConstructor.prepareMaze();
+            const mazeConstructor = new MazeConstructor();
+            const builtMaze = mazeConstructor.prepareMaze(inputMaze);
 
             //Check if there was any validation error while preparing maze
             if (typeof builtMaze === 'string') {
@@ -76,8 +78,7 @@ class Root extends Component {
                     })
                 } else {
                     this.setState({
-                        showError: true,
-                        errorMsg: Constants.NO_VALID_PATH
+                        pathNotFound: true
                     })
                 }
             }
@@ -91,7 +92,7 @@ class Root extends Component {
     }
 
     render() {
-        const { solvedMaze, inputMaze, showError, errorMsg } = this.state;
+        const { solvedMaze, inputMaze, showError, errorMsg, pathNotFound } = this.state;
         return (
             <div id="maze-container" className="maze-container">
             <div className="container-fluid">
@@ -99,7 +100,7 @@ class Root extends Component {
                     {/* <div className="col-lg-1"></div> */}
                     <div className="col-xs-12 col-md-5" >
 
-                        <textarea rows="20" cols="55" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
+                        <textarea id="input-maze" className={showError ? `input-maze` : ''} rows="20" cols="55" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
                         {showError ?
                             <div className="text-danger">
                                 {errorMsg}
@@ -108,16 +109,18 @@ class Root extends Component {
                     </div>
 
                     <div className="col-xs-12 col-md-2">
-                        <Button bsStyle="primary" onClick={this.handleClick}>{solvedMaze ? Constants.BUTTON_RESET_ALL : Constants.BUTTON_SOLVE_MAZE}</Button>
+                        <Button data-test='button' bsStyle="primary" onClick={this.handleClick}>{solvedMaze || pathNotFound ? Constants.BUTTON_RESET_ALL : Constants.BUTTON_SOLVE_MAZE}</Button>
                     </div>
-
-                    <div className="col-xs-12 col-md-5">
-                        {solvedMaze && solvedMaze.map((arr, index) => {
-                            return <div key={index}>
+                    
+                    {solvedMaze ? 
+                    <div className="col-xs-12 col-md-5" id="solved-maze-container">
+                        {solvedMaze && solvedMaze.map((arr, index1) => {
+                            return <div key={index1}>
                                 {
                                     arr.map((coordinate, index) => {
                                         const className = coordinate.getType() == 'PATH' ? 'red' : '';
-                                        return coordinate.type == 'BLANK' ? <span key={index}>&nbsp;</span> :
+                                        //index1 == 9 ? console.log('coordinate.getType()', coordinate.getType()) : null
+                                        return coordinate.getType() == 'BLANK' ? <span key={index}>&nbsp;</span> :
                                             <span key={index} className={className}>{Constants[coordinate.getType()]}</span>
                                     })
 
@@ -128,14 +131,17 @@ class Root extends Component {
                         })}
                         {solvedMaze ? <div className="row content"><span className="red">{Constants.PATH}</span> represents solved path </div> : null}
                     </div>
+                     : null } 
+
+                     {
+                         pathNotFound ? <div className="col-xs-12 col-md-5 red">{Constants.NO_VALID_PATH}</div> : null
+                     }
 
                 </div>
                 </div>
             </div>
         );
     }
-
-
 }
 
-export default Root;
+export default MazeComponent;
