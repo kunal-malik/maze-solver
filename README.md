@@ -21,7 +21,7 @@ A simple two dimesional maze SPA for determining the path from start to finish. 
 9. Test coverage of all the files is greater than 85%
 
 #Validations covered
-1. Maze should contain Start(S) and Finish(F) symbol
+1. Maze should contain start and finish symbol
 2. No other characters are allowed in maze, except those mentioned in 'constants' file
 3. User is informed in case no path is determined
 4. Input maze is not empty
