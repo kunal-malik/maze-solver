@@ -4,7 +4,7 @@ Solves two dimensional maze using Recursive DFS algorithm interactively
 1) yarn install
 2) yarn run start
 3) Open your browser and navigate to http://localhost:9090
-4) To run test cases, use 'yarn test' (report can be found at: /reports/unit/jest)
+4) To run test cases, use 'yarn test' (coverage report generated at: /reports/unit/jest)
 Note: If Yarn commands doesn't work, try installing Yarn using 'npm install -g yarn'
 
 A simple two dimesional maze SPA for determining the path from start to finish. Application is built using React and Javascript.
