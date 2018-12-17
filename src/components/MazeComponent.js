@@ -134,7 +134,7 @@ class MazeComponent extends Component {
                             : null}
 
                         {
-                            pathNotFound ? <div className="col-xs-12 col-md-5 red">{Constants.NO_VALID_PATH}</div> : null
+                            pathNotFound ? <div className="col-xs-12 col-md-2 red">{Constants.NO_VALID_PATH}</div> : null
                         }
 
                     </div>
