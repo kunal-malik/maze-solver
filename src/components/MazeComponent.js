@@ -95,49 +95,49 @@ class MazeComponent extends Component {
         const { solvedMaze, inputMaze, showError, errorMsg, pathNotFound } = this.state;
         return (
             <div id="maze-container" className="maze-container">
-            <div className="container-fluid">
-                <div className="row content">
-                    {/* <div className="col-lg-1"></div> */}
-                    <div className="col-xs-12 col-md-5" >
+                <div className="container-fluid">
+                    <div className="row content">
+                        {/* <div className="col-lg-1"></div> */}
+                        <div className="col-xs-12 col-md-5" >
 
-                        <textarea id="input-maze" className={showError ? `input-maze` : ''} rows="20" cols="55" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
-                        {showError ?
-                            <div className="text-danger">
-                                {errorMsg}
+                            <textarea id="input-maze" className={showError ? `input-maze` : ''} rows="20" cols="55" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
+                            {showError ?
+                                <div className="text-danger">
+                                    {errorMsg}
+                                </div>
+                                : null}
+                        </div>
+
+                        <div className="col-xs-12 col-md-2">
+                            <Button data-test='button' bsStyle="primary" onClick={this.handleClick}>{solvedMaze || pathNotFound ? Constants.BUTTON_RESET_ALL : Constants.BUTTON_SOLVE_MAZE}</Button>
+                        </div>
+
+                        {solvedMaze ?
+                            <div className="col-xs-12 col-md-5" id="solved-maze-container">
+                                {solvedMaze && solvedMaze.map((arr, index1) => {
+                                    return <div key={index1}>
+                                        {
+                                            arr.map((coordinate, index) => {
+                                                const className = coordinate.getType() == 'PATH' ? 'red' : '';
+                                                //index1 == 9 ? console.log('coordinate.getType()', coordinate.getType()) : null
+                                                return coordinate.getType() == 'BLANK' ? <span key={index}>&nbsp;</span> :
+                                                    <span key={index} className={className}>{Constants[coordinate.getType()]}</span>
+                                            })
+
+                                        }
+                                    </div>
+
+
+                                })}
+                                {solvedMaze ? <div className="row content"><span className="red">{Constants.PATH}</span> represents solved path </div> : null}
                             </div>
                             : null}
+
+                        {
+                            pathNotFound ? <div className="col-xs-12 col-md-5 red">{Constants.NO_VALID_PATH}</div> : null
+                        }
+
                     </div>
-
-                    <div className="col-xs-12 col-md-2">
-                        <Button data-test='button' bsStyle="primary" onClick={this.handleClick}>{solvedMaze || pathNotFound ? Constants.BUTTON_RESET_ALL : Constants.BUTTON_SOLVE_MAZE}</Button>
-                    </div>
-                    
-                    {solvedMaze ? 
-                    <div className="col-xs-12 col-md-5" id="solved-maze-container">
-                        {solvedMaze && solvedMaze.map((arr, index1) => {
-                            return <div key={index1}>
-                                {
-                                    arr.map((coordinate, index) => {
-                                        const className = coordinate.getType() == 'PATH' ? 'red' : '';
-                                        //index1 == 9 ? console.log('coordinate.getType()', coordinate.getType()) : null
-                                        return coordinate.getType() == 'BLANK' ? <span key={index}>&nbsp;</span> :
-                                            <span key={index} className={className}>{Constants[coordinate.getType()]}</span>
-                                    })
-
-                                }
-                            </div>
-
-
-                        })}
-                        {solvedMaze ? <div className="row content"><span className="red">{Constants.PATH}</span> represents solved path </div> : null}
-                    </div>
-                     : null } 
-
-                     {
-                         pathNotFound ? <div className="col-xs-12 col-md-5 red">{Constants.NO_VALID_PATH}</div> : null
-                     }
-
-                </div>
                 </div>
             </div>
         );

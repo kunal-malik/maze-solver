@@ -16,5 +16,4 @@ export default {
     ROWS_INEQUAL: 'Rows are not equal in length',
     START_MISSING: 'Start point missing',
     FINISH_MISSING: 'Finish point missing'
-
 }
