@@ -33,14 +33,12 @@ function findPath(maze, row, col) {
             findPath(maze, row + 1, col)
         ) {
             if (coordinate.getType() === 'BLANK') {
-                //console.log('path at', row, col)
                 coordinate.setType('PATH');
             }
             return true;
         }
         return false;
     } else {
-        //console.log('not proceeding with', row, col)
         return false;
     }
 }
@@ -57,7 +55,6 @@ function proceed(maze, row, col) {
     if (row >= 0 && col >= 0 && row < maze.length && col < maze[0].length) {
         const coordinate = maze[row][col];
         if (coordinate.isVisited()) {
-            //console.log('visited before', row, col)
             return false
         }
     } else {

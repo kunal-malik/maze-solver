@@ -119,7 +119,6 @@ class MazeComponent extends Component {
                                         {
                                             arr.map((coordinate, index) => {
                                                 const className = coordinate.getType() == 'PATH' ? 'red' : '';
-                                                //index1 == 9 ? console.log('coordinate.getType()', coordinate.getType()) : null
                                                 return coordinate.getType() == 'BLANK' ? <span key={index}>&nbsp;</span> :
                                                     <span key={index} className={className}>{Constants[coordinate.getType()]}</span>
                                             })

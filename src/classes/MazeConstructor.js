@@ -93,8 +93,6 @@ export default class MazeConstructor {
                 if (!_hasStart) return Constants.START_MISSING;
                 if (!_hasFinish) return Constants.FINISH_MISSING;
             }
-
-            //console.log('final mazeArr in MazeConstructor', mazeArr, errorMsg);
             return errorMsg ? errorMsg : mazeArr;
         }
     }
