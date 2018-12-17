@@ -97,10 +97,10 @@ class MazeComponent extends Component {
             <div id="maze-container" className="maze-container">
                 <div className="container-fluid">
                     <div className="row content">
-                        {/* <div className="col-lg-1"></div> */}
-                        <div className="col-xs-12 col-md-5" >
+                        <div className="col-lg-2"></div>
+                        <div className="col-xs-12 col-md-5 col-lg-4" >
 
-                            <textarea id="input-maze" className={showError ? `input-maze` : ''} rows="20" cols="55" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
+                            <textarea id="input-maze" className={showError ? `input-maze` : ''} rows="20" cols="50" onChange={e => this.handleChange(e.target.value)} placeholder={Constants.INPUT_MAZE_PLACEHOLDER} value={inputMaze}></textarea>
                             {showError ?
                                 <div className="text-danger">
                                     {errorMsg}
@@ -113,7 +113,7 @@ class MazeComponent extends Component {
                         </div>
 
                         {solvedMaze ?
-                            <div className="col-xs-12 col-md-5" id="solved-maze-container">
+                            <div className="col-xs-12 col-md-5  col-lg-4" id="solved-maze-container">
                                 {solvedMaze && solvedMaze.map((arr, index1) => {
                                     return <div key={index1}>
                                         {
